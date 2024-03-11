@@ -76,7 +76,7 @@ def scrape(product: dict, stream: SafeWriter) -> None:
         return
     if name not in HISTORICAL_PIVOT.columns:
         print(f'[INFO] First entry for {name} -\t R$: {price}')
-    elif price == HISTORICAL_PIVOT[name].iloc[-1]:
+    elif price == HISTORICAL_PIVOT[name].dropna().iloc[-1]:
         print(f'[INFO] Price unchanged: {name} -\t R$: {price}')
         return
 
@@ -96,7 +96,7 @@ def send_alerts(product: dict, price: float) -> None:
     name = product['product_name']
     if name not in HISTORICAL_PIVOT.columns:
         return
-    previous_price = HISTORICAL_PIVOT[name].iloc[-1]
+    previous_price = HISTORICAL_PIVOT[name].dropna().iloc[-1]
     if price > previous_price:
         print(f'[INFO] Price increased: {name} -\t R$: {price}')
         return
@@ -110,7 +110,7 @@ def send_alerts(product: dict, price: float) -> None:
         lowest_price_in_40_days = HISTORICAL_PIVOT[name].min()
 
     loc = localize_price
-    diff = loc(round((price/previous_price ) * 100, 2))
+    diff = loc(round((previous_price/now - 1) * 100, 2))
 
     text = ""
     text = f'💸 {name} is now R$: {loc(price)}! 💸'
