@@ -1,18 +1,12 @@
 import datetime
 import time
-from typing import Union
+from urllib.parse import urlparse
 import pandas as pd
-import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util import Retry
 
+from monitor.sites.goimports import fetch_price as goimports_fetch_price
+from monitor.sites.pontofrio import fetch_price as pontofrio_fetch_price
 from monitor.utils.safe_writer import SafeWriter
 from monitor.utils.telegram_notifier import telegram_send_message
-
-
-SESSION = requests.Session()
-SESSION.headers.update({'Connection': 'keep-alive'})
-SESSION.mount('https://', HTTPAdapter(max_retries=Retry(total=3)))
 
 
 CURRENT_TIME = time.strftime("%Y-%m-%d %H:%M:%S")
@@ -21,46 +15,10 @@ HISTORICAL_DATA_FILE = './prices.csv'
 HISTORICAL_DF = pd.read_csv('./prices.csv', parse_dates=['time'])
 HISTORICAL_PIVOT = HISTORICAL_DF.pivot(index='time', columns='product', values='price')
 
-
-def fetch_price(url: str) -> Union[float, None]:
-    """
-    Fetches the price from the given URL.
-
-    Parameters:
-        url (str): The URL to fetch the price from.
-
-    Returns:
-        Union[float, None]: The fetched price as a float, or None if the request fails or the price is not found.
-    """
-    print('[INFO] Fetching price from: ' + url)
-    try:
-        r = SESSION.get(url)
-    except requests.exceptions.RequestException as e:
-        print(f"Request failed: {e}")
-        return None
-
-    if r.status_code != 200:
-        print(f"Request failed with status code {r.status_code}")
-        return None
-
-    for line in r.text.splitlines():
-        line = line.strip()
-        if line.startswith('<h2 class="price">R$ '):
-            return convert_price(line.split()[2])
-    return None
-
-
-def convert_price(price: str) -> float:
-    """
-    Convert the price from a string to a float.
-
-    Args:
-        price (str): The price as a string.
-
-    Returns:
-        float: The price as a float.
-    """
-    return float(price.replace('.', '').replace(',', '.'))
+STRATEGY = {
+    'www.goimports.com.br': goimports_fetch_price,
+    'www.pontofrio.com.br': pontofrio_fetch_price
+}
 
 
 def write_price_to_csv(product: str, price: float, stream: SafeWriter) -> None:
@@ -68,7 +26,11 @@ def write_price_to_csv(product: str, price: float, stream: SafeWriter) -> None:
 
 
 def scrape(product: dict, stream: SafeWriter) -> None:
-    price = fetch_price(product['url'])
+    strategy = STRATEGY.get(urlparse(product['url']).hostname, None)
+    if strategy is None:
+        print(f'[INFO] Could not find strategy for {product["url"]}')
+        return
+    price = strategy(product['url'])
     name = product['product_name']
 
     if not price:

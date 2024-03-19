@@ -1,4 +1,4 @@
-# GoImports Price Monitoring/Alerter
+# Multiple Price Monitoring/Alerter
 This app runs periodically, looks up for each given product in environment variable "PRODUCTS", and for every price drop, a notification is sent to interested users via a Telegram bot.
 
 Github Actions runs every hour, and for any price change, a row is added to `./prices.csv` for future comparisons. 
@@ -18,3 +18,7 @@ Structure for "PRODUCTS":
 A Telegram bot token (obtained from @botfather) must be set in "TELEGRAM_API_TOKEN" ambient variable.
 
 ![telegram-alert](telegram_alert.jpeg)
+
+Supported websites:
+- www.goimports.com.br
+- www.pontofrio.com.br
