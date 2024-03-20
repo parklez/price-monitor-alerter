@@ -26,10 +26,11 @@ def fetch_price(url: str) -> Union[float, None]:
         print(f"Request failed with status code {r.status_code}")
         return None
 
-    price_start = r.text.find('id="product-price">R$ ')
-    price_end = r.text.find('</p>', price_start)
+    price_tag = r.text.find('id="product-price">')
+    price_start = r.text.find('R$ ', price_tag)
+    price_end = r.text.find('<', price_start)
 
     if price_start == -1 or price_end == -1:
         return None
 
-    return convert_price(r.text[price_start+22:price_end])
+    return convert_price(r.text[price_start+3:price_end])
