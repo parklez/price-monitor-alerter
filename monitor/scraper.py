@@ -72,7 +72,7 @@ def send_alerts(product: dict, price: float) -> None:
         lowest_price_in_40_days = HISTORICAL_PIVOT[name].min()
 
     loc = localize_price
-    diff = loc(round((previous_price/now - 1) * 100, 2))
+    diff = loc(round((previous_price/price - 1) * 100, 2))
 
     text = ""
     text = f'💸 {name} is now R$: {loc(price)}! 💸'
