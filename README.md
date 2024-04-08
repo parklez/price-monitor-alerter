@@ -17,7 +17,7 @@ Structure for "PRODUCTS":
 
 A Telegram bot token (obtained from @botfather) must be set in "TELEGRAM_API_TOKEN" ambient variable.
 
-![telegram-alert](telegram_alert.jpeg)
+![telegram-alert](telegram_alert.jpg)
 
 Supported websites:
 - www.goimports.com.br
