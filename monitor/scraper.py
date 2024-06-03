@@ -5,6 +5,8 @@ import pandas as pd
 
 from monitor.sites.goimports import fetch_price as goimports_fetch_price
 from monitor.sites.pontofrio import fetch_price as pontofrio_fetch_price
+from monitor.sites.angeloni import fetch_price as angeloni_fetch_price
+from monitor.sites.lg import fetch_price as lg_fetch_price
 from monitor.utils.safe_writer import SafeWriter
 from monitor.utils.telegram_notifier import telegram_send_message
 
@@ -17,6 +19,8 @@ HISTORICAL_PIVOT = HISTORICAL_DF.pivot(index='time', columns='product', values='
 
 STRATEGY = {
     'www.goimports.com.br': goimports_fetch_price,
+    'www.lg.com': lg_fetch_price,
+    'www.angeloni.com.br': angeloni_fetch_price,
     'www.pontofrio.com.br': pontofrio_fetch_price
 }
 

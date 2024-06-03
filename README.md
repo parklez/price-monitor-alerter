@@ -22,3 +22,5 @@ A Telegram bot token (obtained from @botfather) must be set in "TELEGRAM_API_TOK
 Supported websites:
 - www.goimports.com.br
 - www.pontofrio.com.br
+- www.angeloni.com.br
+- www.lg.com
