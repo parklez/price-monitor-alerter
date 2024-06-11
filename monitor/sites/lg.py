@@ -10,11 +10,11 @@ SESSION.mount("https://", HTTPAdapter(max_retries=Retry(total=3)))
 
 
 def convert_price(price: str) -> float:
-    return float(price.replace(".", "").replace(",", "."))
+    return float(price)
 
 
 def discount_logic(price: float) -> float:
-    return price * 0.9
+    return round(price * 0.9, 2)
 
 
 def fetch_price(url: str) -> Union[float, None]:
