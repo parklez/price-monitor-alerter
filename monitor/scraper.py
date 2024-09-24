@@ -90,6 +90,6 @@ def send_alerts(product: dict, price: float) -> None:
     text += '\n-----------------------------------```'
     text += f'\n{product["url"]}'
 
-    for person in product['alerts']['telegram']:
+    for person in product.get('alerts', {}).get('telegram', []):
         print(f'[INFO] Sending Telegram message to {person}')
         telegram_send_message(text, person)
