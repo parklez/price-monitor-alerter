@@ -1,0 +1,28 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+  <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.2.0/dist/chartjs-plugin-zoom.min.js "></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+  />
+  <link rel="stylesheet" href="https://unpkg.com/keyboard-css@1.2.4/dist/css/main.min.css" />
+  <script type="module" src="./script.js"></script>
+</head>
+
+<link rel="stylesheet" href="style.css" />
+
+<body>
+  <div id="page">
+    <h1 class="title" id="title">./prices.csv</h1>
+    <canvas id="acquisitions"></canvas>
+    <br />
+    <div id="instructions">
+      <h1 class="title">Instructions</h1>
+      <div>- Hold <kbd class="kbc-button kbc-button-xs">shift</kbd> + [DRAG] area to pan</div>
+      <div>- Move <kbd class="kbc-button kbc-button-xs">scroll</kbd> wheel to zoom in and out</div>
+      <div>- [DRAG] to move across X axis</div>
+    </div>
+  </div>
+</body>

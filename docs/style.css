@@ -1,0 +1,35 @@
+html {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background-color: rgb(106, 106, 106);
+}
+
+#page {
+  margin: auto;
+  max-width: 60rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+#title {
+  color: rgb(150, 188, 95);
+  text-align: center;
+  text-shadow: 2px 2px 2px rgb(0, 0, 0);
+}
+
+#acquisitions {
+  background-color: rgb(34, 34, 34);
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+#instructions {
+  background-color: rgba(34, 34, 34);
+  border-radius: 1rem;
+  padding: 1rem;
+  font-weight: bold;
+}
+
+#instructions > h1 {
+  color: rgb(150, 188, 95);
+}
