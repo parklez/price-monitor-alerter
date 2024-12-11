@@ -1,12 +1,12 @@
 html {
   padding-top: 2rem;
   padding-bottom: 2rem;
-  background-color: rgb(106, 106, 106);
+  background-color: rgb(57, 57, 57);
 }
 
 #page {
   margin: auto;
-  max-width: 60rem;
+  max-width: 100rem;
   padding-left: 1rem;
   padding-right: 1rem;
 }
@@ -31,5 +31,16 @@ html {
 }
 
 #instructions > h1 {
+  color: rgb(150, 188, 95);
+}
+
+#about {
+  background-color: rgba(34, 34, 34);
+  border-radius: 1rem;
+  padding: 1rem;
+  font-weight: bold;
+}
+
+#about > h1 {
   color: rgb(150, 188, 95);
 }
