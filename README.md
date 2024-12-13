@@ -1,9 +1,25 @@
-# Multiple Price Monitoring/Alerter
-This app runs periodically, looks up for each given product in environment variable "PRODUCTS", and for every price drop, a notification is sent to interested users via a Telegram bot.
+# Price Monitor/Alerter
+This app looks up the current price for each product in a list, and in case of discount, a notification is sent to interested users via a Telegram bot.
 
-Github Actions runs every hour, and for any price change, a row is added to `./prices.csv` for future comparisons. 
+The process runs hourly via Github Actions, and for any price change, a row is added to `./prices.csv` (and commited) for future comparisons.
 
-Structure for "PRODUCTS":
+Visit my [awesome graph page](https://parklez.github.io/price-monitor-alerter/) for the historical data 🤓☝️
+![graph-page](docs/page.png)
+
+Here's how Telegram notifications will look like from lockscreen!
+![telegram-alert](docs/telegram_alert.jpg)
+(more info is shown when opening the message)
+
+### Supported websites:
+- www.goimports.com.br
+- www.pontofrio.com.br
+- www.angeloni.com.br
+- www.lg.com
+
+### Setup
+This project needs 2 ambient variables in Github Actions's secrets.
+
+- "`PRODUCTS`", which should follow the structure below:
 ```json
 [
   {
@@ -15,12 +31,4 @@ Structure for "PRODUCTS":
 ]
 ```
 
-A Telegram bot token (obtained from @botfather) must be set in "TELEGRAM_API_TOKEN" ambient variable.
-
-![telegram-alert](telegram_alert.jpg)
-
-Supported websites:
-- www.goimports.com.br
-- www.pontofrio.com.br
-- www.angeloni.com.br
-- www.lg.com
+- "`TELEGRAM_API_TOKEN`" - The Telegram bot token (obtained from @botfather).
