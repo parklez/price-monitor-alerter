@@ -15,6 +15,7 @@ Here's how Telegram notifications will look like from lockscreen!
 - www.pontofrio.com.br
 - www.angeloni.com.br
 - www.lg.com
+- www.dell.com
 
 ### Setup
 This project needs 2 ambient variables in Github Actions's secrets.
