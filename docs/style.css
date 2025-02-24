@@ -41,6 +41,26 @@ html {
   font-weight: bold;
 }
 
+#data-table {
+  background-color: rgba(34, 34, 34);
+  border-radius: 1rem;
+  padding: 1rem;
+  font-weight: bold;
+}
+
+#data-table > h1 {
+  color: rgb(150, 188, 95);
+}
+
+#historical-data-container {
+  overflow: scroll;
+  height: 20rem;
+}
+
+#historical-data {
+  width:100%;
+}
+
 #about > h1 {
   color: rgb(150, 188, 95);
 }

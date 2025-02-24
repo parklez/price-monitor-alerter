@@ -61,6 +61,38 @@ function extractDatasets(parsedData) {
 
 }
 
+function generateTable(parsedData) {
+  const table = document.getElementById("historical-data");
+  const tableBody = document.createElement("tbody");
+
+  for (let i = parsedData.length - 1; i >= 0; i--) {
+    const entry = parsedData[i];
+    const product = entry.product;
+    const time = entry.time;
+    const price = Number(entry.price).toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    // if entry is an empty new line, skip it
+    if (!product || !price) {
+      continue;
+    }
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <th>${i + 1}</th>
+      <td>${product}</td>
+      <td>${time}</td>
+      <td>R$: ${price}</td>
+    `;
+
+    tableBody.appendChild(row);
+  }
+
+  table.appendChild(tableBody);
+}
+
 async function main() {
   const csvText =  await fetchCsv();
   const parsedData = parseCsv(csvText);
@@ -99,6 +131,8 @@ async function main() {
       }
     }
   });
+
+  generateTable(parsedData);
 }
 
 document.addEventListener('keydown', (ev) => {
