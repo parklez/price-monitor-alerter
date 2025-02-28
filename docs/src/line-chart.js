@@ -1,12 +1,4 @@
-async function fetchCsv() {
-  const response = await fetch("https://raw.githubusercontent.com/parklez/price-monitor-alerter/refs/heads/master/prices.csv");
-  const csvText = await response.text();
-  return csvText;
-}
-
-function parseCsv(csvText) {
-  return Papa.parse(csvText, { header: true }).data;
-}
+import { generateTable } from "./historical-data.js";
 
 function getAllTimeStamps(parsedData) {
   return parsedData.map((entry) => entry.time);
@@ -22,7 +14,7 @@ function extractDatasets(parsedData) {
 
     // if entry is an empty new line, skip it
     if (!product || !price) {
-      continue
+      continue;
     }
 
     // If it's the first time this product is encountered, create an empty array
@@ -32,7 +24,7 @@ function extractDatasets(parsedData) {
     // If it's the first timestamp ever, add the first price to the array and continue
     if (i == 0) {
       datasets[product].push(price);
-      continue
+      continue;
     }
 
     // current size of the array for this product
@@ -58,44 +50,9 @@ function extractDatasets(parsedData) {
       data: datasets[product],
     };
   });
-
 }
 
-function generateTable(parsedData) {
-  const table = document.getElementById("historical-data");
-  const tableBody = document.createElement("tbody");
-
-  for (let i = parsedData.length - 1; i >= 0; i--) {
-    const entry = parsedData[i];
-    const product = entry.product;
-    const time = entry.time;
-    const price = Number(entry.price).toLocaleString('pt-BR', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-
-    // if entry is an empty new line, skip it
-    if (!product || !price) {
-      continue;
-    }
-
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <th>${i + 1}</th>
-      <td>${product}</td>
-      <td>${time}</td>
-      <td>R$: ${price}</td>
-    `;
-
-    tableBody.appendChild(row);
-  }
-
-  table.appendChild(tableBody);
-}
-
-async function main() {
-  const csvText =  await fetchCsv();
-  const parsedData = parseCsv(csvText);
+async function generateChart(parsedData) {
   const timestamps = getAllTimeStamps(parsedData);
   const datasets = extractDatasets(parsedData, timestamps);
 
@@ -104,58 +61,82 @@ async function main() {
     datasets: datasets,
   };
 
-  new Chart(document.getElementById("acquisitions"), {
+  const chart = await new Chart(document.getElementById("chart"), {
     type: "line",
     data: data,
     options: {
+      // https://stackoverflow.com/questions/33385398/how-to-fix-blurry-chart-issue-in-chart-js
+      devicePixelRatio: 4,
       plugins: {
+        legend: {
+          labels: {
+            color: "hsl(221deg,14%,71%)",
+            font: {
+              size: 16,
+            },
+          },
+          // https://www.chartjs.org/docs/latest/configuration/legend.html#custom-on-click-actions
+          onClick: (_, legendItem, legend) => {
+            const index = legendItem.datasetIndex;
+            const ci = legend.chart;
+
+            if (ci.isDatasetVisible(index)) {
+              ci.hide(index);
+              legendItem.hidden = true;
+            } else {
+              ci.show(index);
+              legendItem.hidden = false;
+            }
+            const hiddenLabels = ci.data.datasets
+              .filter((_, i) => !ci.isDatasetVisible(i))
+              .map((dataset) => dataset.label);
+            generateTable(parsedData, hiddenLabels);
+          },
+        },
         zoom: {
           pan: {
             enabled: true,
-            mode: 'x'
+            mode: "x",
           },
           zoom: {
             wheel: {
               enabled: true,
             },
             pinch: {
-              enabled: true
+              enabled: true,
             },
             drag: {
               enabled: true,
-              modifierKey: 'shift'
+              modifierKey: "shift",
             },
-            mode: 'x'
-          }
-        }
-      }
-    }
+            mode: "x",
+          },
+        },
+      },
+      scales: {
+        x: {
+          grid: {
+            color: "rgb(67, 67, 67)",
+          },
+        },
+        y: {
+          grid: {
+            color: "rgb(67, 67, 67)",
+          },
+        },
+      },
+    },
   });
 
-  generateTable(parsedData);
+  // Sets default zoom + panning all the way to right
+  chart.zoom(1.8);
+  chart.pan(
+    {
+      x: Number.MIN_SAFE_INTEGER,
+    },
+    undefined,
+    "show"
+  );
 }
 
-document.addEventListener('keydown', (ev) => {
-  if (ev.key !== 'Shift') {
-    return;
-  }
-  const element = document.querySelector(
-      '[data-keyboard-key="SHIFT"]'
-  );
-  element.classList.add('active');
-});
-
-document.addEventListener('keyup', (ev) => {
-  if (ev.key !== 'Shift') {
-    return;
-  }
-  const element = document.querySelector(
-      '[data-keyboard-key="SHIFT"]'
-  );
-  element.classList.remove('active');
-});
-
-
-(async () => {
-  await main();
-})();
+export { generateChart };

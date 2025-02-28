@@ -1,7 +1,27 @@
+:root {
+  --tile-bg: rgba(28, 28, 28);
+  --tile-fg: rgb(41, 41, 41);
+  --shadow: 5px 5px 5px rgba(0, 0, 0, 0.761);
+  --price-increase: rgb(186, 230, 124);
+  --price-decrease: rgb(255, 63, 63);
+  --text-color: rgb(150, 188, 95);
+  /* This tells the browser to use dark mode, thus making the scrollbar dark */
+  color-scheme: dark; 
+}
+
 html {
   padding-top: 2rem;
   padding-bottom: 2rem;
-  background-color: rgb(57, 57, 57);
+
+  background-color: #2f2f2f;
+  background-image: linear-gradient(30deg, #3a3a3a 12%, transparent 12.5%, transparent 87%, #3a3a3a 87.5%, #3a3a3a),
+  linear-gradient(150deg, #3a3a3a 12%, transparent 12.5%, transparent 87%, #3a3a3a 87.5%, #3a3a3a),
+  linear-gradient(30deg, #3a3a3a 12%, transparent 12.5%, transparent 87%, #3a3a3a 87.5%, #3a3a3a),
+  linear-gradient(150deg, #3a3a3a 12%, transparent 12.5%, transparent 87%, #3a3a3a 87.5%, #3a3a3a),
+  linear-gradient(60deg, #2c2c2c 25%, transparent 25.5%, transparent 75%, #2c2c2c 75%, #2c2c2c),
+  linear-gradient(60deg, #2c2c2c 25%, transparent 25.5%, transparent 75%, #2c2c2c 75%, #2c2c2c);
+  background-size:80px 140px;
+  background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
 }
 
 #page {
@@ -12,55 +32,79 @@ html {
 }
 
 #title {
-  color: rgb(150, 188, 95);
   text-align: center;
   text-shadow: 2px 2px 2px rgb(0, 0, 0);
 }
 
-#acquisitions {
-  background-color: rgb(34, 34, 34);
+/* This is an expansion of the Bulma class */
+.title {
+  text-align: center;
+  color: var(--text-color);
+}
+
+#line-chart-container {
+  background-color: var(--tile-bg);
+  box-shadow: var(--shadow);
   padding: 1rem;
-  border-radius: 1rem;
+  border-radius: 1rem 1rem 1rem 1rem;
+  box-shadow: var(--shadow);
 }
 
 #instructions {
-  background-color: rgba(34, 34, 34);
-  border-radius: 1rem;
-  padding: 1rem;
   font-weight: bold;
+  text-align: center;
 }
 
-#instructions > h1 {
-  color: rgb(150, 188, 95);
+#instructions > details > summary {
+  text-decoration: underline;
+}
+
+#keyboard-shortcuts {
+  background-color: var(--tile-fg);
+  border-radius: 1rem;
+  padding: 1rem 1rem 1rem 1rem;
 }
 
 #about {
-  background-color: rgba(34, 34, 34);
+  background-color: var(--tile-bg);
   border-radius: 1rem;
   padding: 1rem;
   font-weight: bold;
+  box-shadow: var(--shadow);
 }
 
 #data-table {
-  background-color: rgba(34, 34, 34);
+  background-color: var(--tile-bg);
   border-radius: 1rem;
   padding: 1rem;
   font-weight: bold;
-}
-
-#data-table > h1 {
-  color: rgb(150, 188, 95);
+  box-shadow: var(--shadow);
 }
 
 #historical-data-container {
-  overflow: scroll;
-  height: 20rem;
+  overflow-y: scroll;
+  height: 22rem;
+  border-radius: 1rem;
 }
 
 #historical-data {
   width:100%;
+  --bulma-table-cell-border-color: rgb(96, 96, 96);
+
+  --bulma-table-background-color: rgb(50, 50, 50);
+  --bulma-table-row-hover-background-color: rgb(90, 90, 90);
+
+  --bulma-table-striped-row-even-background-color: rgb(60, 60, 60);
+  --bulma-table-striped-row-even-hover-background-color: rgb(90, 90, 90);
 }
 
-#about > h1 {
-  color: rgb(150, 188, 95);
+/* This rule keeps the header always on top */
+#historical-data > thead {
+  position: sticky;
+  top: 0px;
+}
+
+/* This rule colors the header itself, since it otherwise relies on an empty static row  */
+#historical-data > thead > tr:first-child {
+  background-color: var(--tile-fg)
 }
